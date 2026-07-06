@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Neovim Keybindings — Cheatsheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #1a1b26;
+    --bg-dark: #16161e;
+    --bg-soft: #1f2335;
+    --panel: #24283b;
+    --fg: #c0caf5;
+    --fg-dim: #565f89;
+
+    --rule: #2f3549;
+
+    --red: #f7768e;
+    --green: #9ece6a;
+    --yellow: #e0af68;
+    --blue: #7aa2f7;
+    --purple: #bb9af7;
+    --aqua: #7dcfff;
+    --orange: #ff9e64;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg-dark);
+    color: var(--fg);
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    padding: 22px 28px 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sheet {
+    width: 100%;
+    max-width: 2320px;
+  }
+
+  .statusbar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+  }
+  .statusbar .seg {
+    padding: 8px 16px;
+    white-space: nowrap;
+    border-right: 1px solid var(--rule);
+  }
+  .statusbar .seg.active {
+    background: var(--blue);
+    color: var(--bg-dark);
+    font-weight: 700;
+  }
+  .statusbar .seg.title {
+    flex: 1;
+    text-align: right;
+    color: var(--fg-dim);
+    letter-spacing: 0.02em;
+  }
+  .statusbar .seg .dim { color: var(--fg-dim); }
+
+  .titlerow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    color: var(--fg-dim);
+    font-size: 13px;
+    margin: 0;
+  }
+  .subtitle code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-soft);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--aqua);
+  }
+
+  .modes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 14px;
+  }
+
+  @media (max-width: 1200px) {
+    .modes { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .modes { grid-template-columns: 1fr; }
+  }
+
+  .mode-card {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .mode-card.wide {
+    grid-column: span 4;
+  }
+  @media (max-width: 1200px) {
+    .mode-card.wide { grid-column: span 2; }
+  }
+  @media (max-width: 640px) {
+    .mode-card.wide { grid-column: span 1; }
+  }
+
+  .mode-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .mode-head .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    opacity: 0.65;
+    font-size: 10.5px;
+  }
+
+  .rows {
+    padding: 4px 8px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 4px;
+    border-bottom: 1px solid var(--bg-soft);
+  }
+  .row:last-child { border-bottom: none; }
+
+  .keys {
+    display: flex;
+    gap: 3px;
+    flex: 0 0 auto;
+    min-width: 100px;
+  }
+  .key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--fg);
+    background: linear-gradient(180deg, #2a2f45, #24283b);
+    border: 1px solid var(--rule);
+    border-bottom: 2px solid #10111a;
+    border-radius: 4px;
+    padding: 2px 6px;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+  .desc {
+    font-size: 12px;
+    color: var(--fg-dim);
+  }
+  /* marker for personal (non-default) bindings — source rows ending in "(custom)" */
+  .desc .custom {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--orange);
+    border: 1px solid var(--orange);
+    border-radius: 3px;
+    padding: 0 4px;
+    margin-left: 6px;
+  }
+
+  .wide .rows {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0 10px;
+  }
+  @media (max-width: 1200px) {
+    .wide .rows { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .wide .rows { grid-template-columns: 1fr; }
+  }
+
+  footer {
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-dim);
+    text-align: center;
+    letter-spacing: 0.03em;
+  }
+
+  /* ==========================================================================
+     SHEET-SPECIFIC STYLES — neovim
+     ========================================================================== */
+
+  /* rows size to content — keeps the small wide card from stretching to match row 1 */
+  .modes { grid-auto-rows: auto; }
+
+  /* accent mapping: one palette color per card head */
+  .mode-editing .mode-head       { color: var(--bg-dark); background: var(--red); }
+  .mode-cutpaste .mode-head      { color: var(--bg-dark); background: var(--green); }
+  .mode-searchreplace .mode-head { color: var(--bg-dark); background: var(--yellow); }
+  .mode-screen .mode-head        { color: var(--bg-dark); background: var(--aqua); }
+  .mode-buffers .mode-head       { color: var(--bg-dark); background: var(--blue); }
+  .mode-lsp .mode-head           { color: var(--bg-dark); background: var(--purple); }
+  .mode-snacks .mode-head        { color: var(--bg-dark); background: var(--orange); }
+  .mode-misc .mode-head          { color: var(--fg); background: var(--rule); }
+</style>
+</head>
+<body>
+  <div class="sheet">
+
+    <div class="statusbar">
+      <div class="seg active">NORMAL</div>
+      <div class="seg dim">nvim</div>
+      <div class="seg dim">~/.config/nvim</div>
+      <div class="seg title">keybindings cheatsheet</div>
+    </div>
+
+    <div class="titlerow">
+      <h1>Neovim Keybindings</h1>
+      <p class="subtitle">Editing, cut &amp; paste, search &amp; replace, buffers, LSP and screen movement. <code>#</code> stands for a count prefix.</p>
+    </div>
+
+    <div class="modes">
+
+      <div class="mode-card mode-editing">
+        <div class="mode-head">Editing <span class="count">replace, change, undo</span></div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">r</span></div><div class="desc">replace single character</div></div>
+          <div class="row"><div class="keys"><span class="key">R</span></div><div class="desc">enter replace mode</div></div>
+          <div class="row"><div class="keys"><span class="key">J</span></div><div class="desc">join line below to current one with one space in between them</div></div>
+          <div class="row"><div class="keys"><span class="key">gJ</span></div><div class="desc">join line below to current one with no spaces</div></div>
+          <div class="row"><div class="keys"><span class="key">cc</span></div><div class="desc">change entire line</div></div>
+          <div class="row"><div class="keys"><span class="key">C</span></div><div class="desc">change to the end of line</div></div>
+          <div class="row"><div class="keys"><span class="key">ciw</span></div><div class="desc">change inner word</div></div>
+          <div class="row"><div class="keys"><span class="key">s</span></div><div class="desc">delete character and substitute text</div></div>
+          <div class="row"><div class="keys"><span class="key">S</span></div><div class="desc">delete line and substitute text</div></div>
+          <div class="row"><div class="keys"><span class="key">u</span></div><div class="desc">undo</div></div>
+          <div class="row"><div class="keys"><span class="key">Ctrl r</span></div><div class="desc">redo</div></div>
+          <div class="row"><div class="keys"><span class="key">.</span></div><div class="desc">repeat last command</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card mode-cutpaste">
+        <div class="mode-head">Cut &amp; Paste <span class="count">yank, put, delete</span></div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">yy</span><span class="key">Y</span></div><div class="desc">yank single line</div></div>
+          <div class="row"><div class="keys"><span class="key">yw</span></div><div class="desc">yank from cursor to start of next word</div></div>
+          <div class="row"><div class="keys"><span class="key">y#m</span></div><div class="desc">yank # of lines with m movement (hjkl…)</div></div>
+          <div class="row"><div class="keys"><span class="key">"ayy</span></div><div class="desc">yank current line into named buffer a</div></div>
+          <div class="row"><div class="keys"><span class="key">p</span></div><div class="desc">put (paste) after the cursor</div></div>
+          <div class="row"><div class="keys"><span class="key">P</span></div><div class="desc">put (paste) before the cursor</div></div>
+          <div class="row"><div class="keys"><span class="key">"aP</span></div><div class="desc">put text from buffer a before cursor</div></div>
+          <div class="row"><div class="keys"><span class="key">dd</span></div><div class="desc">delete current line</div></div>
+          <div class="row"><div class="keys"><span class="key">#dm</span></div><div class="desc">delete # of lines with movement (hjkl)</div></div>
+          <div class="row"><div class="keys"><span class="key">D</span></div><div class="desc">delete to end of line</div></div>
+          <div class="row"><div class="keys"><span class="key">dw</span></div><div class="desc">delete until word</div></div>
+          <div class="row"><div class="keys"><span class="key">x</span></div><div class="desc">delete character at cursor</div></div>
+          <div class="row"><div class="keys"><span class="key">X</span></div><div class="desc">delete backwards from cursor</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card mode-searchreplace">
+        <div class="mode-head">Search &amp; Replace</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">/pattern</span></div><div class="desc">search for pattern in current buffer</div></div>
+          <div class="row"><div class="keys"><span class="key">?pattern</span></div><div class="desc">search for pattern backwards in current buffer</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;/</span></div><div class="desc">search for pattern backwards in current buffer</div></div>
+          <div class="row"><div class="keys"><span class="key">:s/old/new</span></div><div class="desc">replace next old with new</div></div>
+          <div class="row"><div class="keys"><span class="key">:s/old/new/g</span></div><div class="desc">replace instances of old with new in current line</div></div>
+          <div class="row"><div class="keys"><span class="key">:%s/old/new/g</span></div><div class="desc">replace all old with new throughout file</div></div>
+          <div class="row"><div class="keys"><span class="key">:%s/old/new/gc</span></div><div class="desc">replace all old with new in file with confirmations</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card mode-screen">
+        <div class="mode-head">Screen Movement <span class="count">scroll &amp; reposition</span></div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">C-d</span></div><div class="desc">move forward half a screen</div></div>
+          <div class="row"><div class="keys"><span class="key">C-u</span></div><div class="desc">move backward half a screen</div></div>
+          <div class="row"><div class="keys"><span class="key">zz</span></div><div class="desc">cursor line to center of screen</div></div>
+          <div class="row"><div class="keys"><span class="key">zt</span></div><div class="desc">cursor line to top of screen</div></div>
+          <div class="row"><div class="keys"><span class="key">zb</span></div><div class="desc">cursor line to bottom of screen</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-buffers">
+        <div class="mode-head">Buffers <span class="count">&lt;leader&gt;b?</span></div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">S-h</span></div><div class="desc">switch to left buffer</div></div>
+          <div class="row"><div class="keys"><span class="key">S-l</span></div><div class="desc">switch to right buffer</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;bd</span></div><div class="desc">delete buffer</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;`</span></div><div class="desc">change to previous buffer</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;bj</span></div><div class="desc">pick buffer</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;bp</span></div><div class="desc">pin buffer</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;.</span></div><div class="desc">buffer snacks</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;be</span></div><div class="desc">buffer explorer</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-lsp">
+        <div class="mode-head">LSP <span class="count">g?</span></div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">gd</span></div><div class="desc">goto definition</div></div>
+          <div class="row"><div class="keys"><span class="key">gr</span></div><div class="desc">references</div></div>
+          <div class="row"><div class="keys"><span class="key">gI</span></div><div class="desc">goto implementation</div></div>
+          <div class="row"><div class="keys"><span class="key">gy</span></div><div class="desc">goto t[y]pe definition</div></div>
+          <div class="row"><div class="keys"><span class="key">K</span></div><div class="desc">hover</div></div>
+          <div class="row"><div class="keys"><span class="key">gK</span></div><div class="desc">signature help</div></div>
+          <div class="row"><div class="keys"><span class="key">ca</span></div><div class="desc">code action</div></div>
+          <div class="row"><div class="keys"><span class="key">cr</span></div><div class="desc">code rename</div></div>
+          <div class="row"><div class="keys"><span class="key">[[</span></div><div class="desc">next reference</div></div>
+          <div class="row"><div class="keys"><span class="key">]]</span></div><div class="desc">previous reference</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;ss</span></div><div class="desc">workspace symbols</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leadersS&gt;</span></div><div class="desc">document symbolos</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-snacks">
+        <div class="mode-head">Snacks History <span class="count">&lt;leader&gt;s</span></div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;fr</span></div><div class="desc">recent files</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;fb</span></div><div class="desc">buffers</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;n</span></div><div class="desc">notification history</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;s"</span></div><div class="desc">register history</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;:</span></div><div class="desc">command history</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-misc">
+        <div class="mode-head">Miscellaneous commands</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">ZZ</span></div><div class="desc">close window</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;uz</span></div><div class="desc">toggle zen</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;leader&gt;.</span></div><div class="desc">toggle scratch buffer</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>NORMAL → INSERT → VISUAL → COMMAND-LINE — Esc always brings you home</footer>
+  </div>
+</body>
+</html>
