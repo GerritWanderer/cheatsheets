@@ -5,3 +5,5 @@ Single-page HTML cheatsheets for tools I use every day. Each sheet has a folder 
 ## Sheets
 
 - [Neovim](docs/neovim.html) — [source](src/neovim/neovim.md)
+- [Tmux](docs/tmux.html) — [source](src/tmux/tmux.md)
+- [TypeScript](docs/typescript.html) — [source](src/typescript/typescript.md)

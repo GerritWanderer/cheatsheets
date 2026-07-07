@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tmux Keybindings — Cheatsheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #1a1b26;
+    --bg-dark: #16161e;
+    --bg-soft: #1f2335;
+    --panel: #24283b;
+    --fg: #c0caf5;
+    --fg-dim: #565f89;
+
+    --rule: #2f3549;
+
+    --red: #f7768e;
+    --green: #9ece6a;
+    --yellow: #e0af68;
+    --blue: #7aa2f7;
+    --purple: #bb9af7;
+    --aqua: #7dcfff;
+    --orange: #ff9e64;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg-dark);
+    color: var(--fg);
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    padding: 22px 28px 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sheet {
+    width: 100%;
+    max-width: 2320px;
+  }
+
+  .statusbar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+  }
+  .statusbar .seg {
+    padding: 8px 16px;
+    white-space: nowrap;
+    border-right: 1px solid var(--rule);
+  }
+  .statusbar .seg.active {
+    background: var(--blue);
+    color: var(--bg-dark);
+    font-weight: 700;
+  }
+  .statusbar .seg.title {
+    flex: 1;
+    text-align: right;
+    color: var(--fg-dim);
+    letter-spacing: 0.02em;
+  }
+  .statusbar .seg .dim { color: var(--fg-dim); }
+
+  .titlerow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    color: var(--fg-dim);
+    font-size: 13px;
+    margin: 0;
+  }
+  .subtitle code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-soft);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--aqua);
+  }
+
+  .modes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: auto;
+    gap: 14px;
+  }
+
+  @media (max-width: 1200px) {
+    .modes { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .modes { grid-template-columns: 1fr; }
+  }
+
+  .mode-card {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .mode-card.wide {
+    grid-column: span 4;
+  }
+  @media (max-width: 1200px) {
+    .mode-card.wide { grid-column: span 2; }
+  }
+  @media (max-width: 640px) {
+    .mode-card.wide { grid-column: span 1; }
+  }
+
+  .mode-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .mode-head .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    opacity: 0.65;
+    font-size: 10.5px;
+  }
+
+  .rows {
+    padding: 4px 8px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 4px;
+    border-bottom: 1px solid var(--bg-soft);
+  }
+  .row:last-child { border-bottom: none; }
+
+  .keys {
+    display: flex;
+    gap: 3px;
+    flex: 0 0 auto;
+    min-width: 100px;
+  }
+  .key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--fg);
+    background: linear-gradient(180deg, #2a2f45, #24283b);
+    border: 1px solid var(--rule);
+    border-bottom: 2px solid #10111a;
+    border-radius: 4px;
+    padding: 2px 6px;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+  .desc {
+    font-size: 12px;
+    color: var(--fg-dim);
+  }
+  /* marker for personal (non-default) bindings — source rows ending in "(custom)" */
+  .desc .custom {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--orange);
+    border: 1px solid var(--orange);
+    border-radius: 3px;
+    padding: 0 4px;
+    margin-left: 6px;
+  }
+
+  .wide .rows {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0 10px;
+  }
+  @media (max-width: 1200px) {
+    .wide .rows { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .wide .rows { grid-template-columns: 1fr; }
+  }
+
+  footer {
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-dim);
+    text-align: center;
+    letter-spacing: 0.03em;
+  }
+
+  /* ==========================================================================
+     SHEET-SPECIFIC STYLES — tmux
+     ========================================================================== */
+
+  /* accent mapping: one palette color per card head */
+  .mode-panes .mode-head   { color: var(--bg-dark); background: var(--purple); }
+  .mode-windows .mode-head { color: var(--bg-dark); background: var(--blue); }
+  .mode-session .mode-head { color: var(--bg-dark); background: var(--green); }
+  .mode-copy .mode-head    { color: var(--bg-dark); background: var(--yellow); }
+  .mode-general .mode-head { color: var(--fg); background: var(--rule); }
+  .mode-layout .mode-head  { color: var(--bg-dark); background: var(--orange); }
+</style>
+</head>
+<body>
+  <div class="sheet">
+
+    <div class="statusbar">
+      <div class="seg active">C-Space</div>
+      <div class="seg dim">tmux</div>
+      <div class="seg dim">~/.tmux.conf</div>
+      <div class="seg title">keybindings cheatsheet</div>
+    </div>
+
+    <div class="titlerow">
+      <h1>Tmux Keybindings</h1>
+      <p class="subtitle">Personal config — prefix remapped to <code>Ctrl + Space</code>.</p>
+    </div>
+
+    <div class="modes">
+
+      <div class="mode-card mode-panes">
+        <div class="mode-head">Panes</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">Prefix v</span></div><div class="desc">split pane beside (vertical)</div></div>
+          <div class="row"><div class="keys"><span class="key">Prefix h</span></div><div class="desc">split pane below (horizontal)</div></div>
+          <div class="row"><div class="keys"><span class="key">Prefix x</span></div><div class="desc">kill pane</div></div>
+          <div class="row"><div class="keys"><span class="key">Prefix z</span></div><div class="desc">toggle pane zoom (fullscreen)</div></div>
+          <div class="row"><div class="keys"><span class="key">Ctrl Alt Arrow</span></div><div class="desc">move between panes</div></div>
+          <div class="row"><div class="keys"><span class="key">Ctrl Alt Shift Arrow</span></div><div class="desc">resize panes</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card mode-windows">
+        <div class="mode-head">Windows</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">Prefix c</span></div><div class="desc">new window</div></div>
+          <div class="row"><div class="keys"><span class="key">Prefix k</span></div><div class="desc">kill window</div></div>
+          <div class="row"><div class="keys"><span class="key">Prefix r</span></div><div class="desc">rename window</div></div>
+          <div class="row"><div class="keys"><span class="key">Alt 1</span>…<span class="key">9</span></div><div class="desc">go to specific window</div></div>
+          <div class="row"><div class="keys"><span class="key">Alt Left/Right</span></div><div class="desc">move between windows</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card mode-session">
+        <div class="mode-head">Session</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">Prefix C</span></div><div class="desc">new session</div></div>
+          <div class="row"><div class="keys"><span class="key">Prefix K</span></div><div class="desc">kill session</div></div>
+          <div class="row"><div class="keys"><span class="key">Prefix R</span></div><div class="desc">rename session</div></div>
+          <div class="row"><div class="keys"><span class="key">Prefix N</span><span class="key">Prefix P</span></div><div class="desc">next / previous session</div></div>
+          <div class="row"><div class="keys"><span class="key">Alt Up/Down</span></div><div class="desc">move between sessions</div></div>
+          <div class="row"><div class="keys"><span class="key">Prefix s</span></div><div class="desc">list sessions</div></div>
+          <div class="row"><div class="keys"><span class="key">Prefix d</span></div><div class="desc">detach from session</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card mode-copy">
+        <div class="mode-head">Copy Mode <span class="count">vi-style</span></div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">Prefix [</span></div><div class="desc">enter copy mode</div></div>
+          <div class="row"><div class="keys"><span class="key">v</span></div><div class="desc">begin selection (in copy mode)</div></div>
+          <div class="row"><div class="keys"><span class="key">y</span></div><div class="desc">copy selection (in copy mode)</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-general">
+        <div class="mode-head">General</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">Prefix q</span></div><div class="desc">reload config</div></div>
+          <div class="row"><div class="keys"><span class="key">Prefix :</span></div><div class="desc">command prompt</div></div>
+          <div class="row"><div class="keys"><span class="key">Ctrl-^ .</span></div><div class="desc">close mosh session</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-layout">
+        <div class="mode-head">Layout Scripts <span class="count">shell functions, not tmux bindings</span></div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">tdl &lt;ai&gt; [second_ai]</span></div><div class="desc">create dev layout with editor, AI, and terminal</div></div>
+          <div class="row"><div class="keys"><span class="key">tdlm &lt;ai&gt; [second_ai]</span></div><div class="desc">create dev layout per subdirectory</div></div>
+          <div class="row"><div class="keys"><span class="key">tsl &lt;count&gt; &lt;command&gt;</span></div><div class="desc">create multi-pane swarm layout</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>C-Space then a key — that's the whole interface</footer>
+  </div>
+</body>
+</html>

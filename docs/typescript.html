@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TypeScript Cheatsheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #1a1b26;
+    --bg-dark: #16161e;
+    --bg-soft: #1f2335;
+    --panel: #24283b;
+    --fg: #c0caf5;
+    --fg-dim: #565f89;
+
+    --rule: #2f3549;
+
+    --red: #f7768e;
+    --green: #9ece6a;
+    --yellow: #e0af68;
+    --blue: #7aa2f7;
+    --purple: #bb9af7;
+    --aqua: #7dcfff;
+    --orange: #ff9e64;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg-dark);
+    color: var(--fg);
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    padding: 22px 28px 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sheet {
+    width: 100%;
+    max-width: 2320px;
+  }
+
+  .statusbar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+  }
+  .statusbar .seg {
+    padding: 8px 16px;
+    white-space: nowrap;
+    border-right: 1px solid var(--rule);
+  }
+  .statusbar .seg.active {
+    background: var(--blue);
+    color: var(--bg-dark);
+    font-weight: 700;
+  }
+  .statusbar .seg.title {
+    flex: 1;
+    text-align: right;
+    color: var(--fg-dim);
+    letter-spacing: 0.02em;
+  }
+  .statusbar .seg .dim { color: var(--fg-dim); }
+
+  .titlerow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    color: var(--fg-dim);
+    font-size: 13px;
+    margin: 0;
+  }
+  .subtitle code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-soft);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--aqua);
+  }
+
+  .modes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: auto;
+    gap: 14px;
+  }
+
+  @media (max-width: 1200px) {
+    .modes { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .modes { grid-template-columns: 1fr; }
+  }
+
+  .mode-card {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .mode-card.wide {
+    grid-column: span 4;
+  }
+  @media (max-width: 1200px) {
+    .mode-card.wide { grid-column: span 2; }
+  }
+  @media (max-width: 640px) {
+    .mode-card.wide { grid-column: span 1; }
+  }
+
+  .mode-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .mode-head .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    opacity: 0.65;
+    font-size: 10.5px;
+  }
+
+  .rows {
+    padding: 4px 8px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 4px;
+    border-bottom: 1px solid var(--bg-soft);
+  }
+  .row:last-child { border-bottom: none; }
+
+  .keys {
+    display: flex;
+    gap: 3px;
+    flex: 0 0 auto;
+    min-width: 100px;
+  }
+  .key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--fg);
+    background: linear-gradient(180deg, #2a2f45, #24283b);
+    border: 1px solid var(--rule);
+    border-bottom: 2px solid #10111a;
+    border-radius: 4px;
+    padding: 2px 6px;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+  .desc {
+    font-size: 12px;
+    color: var(--fg-dim);
+  }
+  /* marker for personal (non-default) bindings — source rows ending in "(custom)" */
+  .desc .custom {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--orange);
+    border: 1px solid var(--orange);
+    border-radius: 3px;
+    padding: 0 4px;
+    margin-left: 6px;
+  }
+
+  .wide .rows {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0 10px;
+  }
+  @media (max-width: 1200px) {
+    .wide .rows { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .wide .rows { grid-template-columns: 1fr; }
+  }
+
+  footer {
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-dim);
+    text-align: center;
+    letter-spacing: 0.03em;
+  }
+
+  /* ==========================================================================
+     SHEET-SPECIFIC STYLES — typescript
+     ========================================================================== */
+
+  /* wide cards hold longer code snippets — let the keys column breathe */
+  .mode-union .keys, .mode-utility .keys, .mode-classes .keys, .mode-modules .keys {
+    min-width: 170px;
+  }
+
+  /* accent mapping: one palette color per card head */
+  .mode-basic .mode-head      { color: var(--bg-dark); background: var(--red); }
+  .mode-interfaces .mode-head { color: var(--bg-dark); background: var(--green); }
+  .mode-functions .mode-head  { color: var(--bg-dark); background: var(--yellow); }
+  .mode-generics .mode-head   { color: var(--bg-dark); background: var(--blue); }
+  .mode-union .mode-head      { color: var(--bg-dark); background: var(--purple); }
+  .mode-utility .mode-head    { color: var(--bg-dark); background: var(--aqua); }
+  .mode-classes .mode-head    { color: var(--bg-dark); background: var(--orange); }
+  .mode-modules .mode-head    { color: var(--fg); background: var(--rule); }
+</style>
+</head>
+<body>
+  <div class="sheet">
+
+    <div class="statusbar">
+      <div class="seg active">TS</div>
+      <div class="seg dim">tsc --strict</div>
+      <div class="seg dim">tsconfig.json</div>
+      <div class="seg title">type reference</div>
+    </div>
+
+    <div class="titlerow">
+      <h1>TypeScript Cheatsheet</h1>
+      <p class="subtitle">Core syntax: types, interfaces, generics, and utility types.</p>
+    </div>
+
+    <div class="modes">
+
+      <div class="mode-card mode-basic">
+        <div class="mode-head">Basic Types</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">string</span><span class="key">number</span><span class="key">boolean</span></div><div class="desc">primitive types</div></div>
+          <div class="row"><div class="keys"><span class="key">string[]</span></div><div class="desc">array of a type</div></div>
+          <div class="row"><div class="keys"><span class="key">[string, number]</span></div><div class="desc">tuple: fixed length, fixed types</div></div>
+          <div class="row"><div class="keys"><span class="key">enum Color { Red, Green }</span></div><div class="desc">enum type</div></div>
+          <div class="row"><div class="keys"><span class="key">any</span></div><div class="desc">disables type checking</div></div>
+          <div class="row"><div class="keys"><span class="key">unknown</span></div><div class="desc">safe top type — must narrow before use</div></div>
+          <div class="row"><div class="keys"><span class="key">never</span></div><div class="desc">a value that never occurs</div></div>
+          <div class="row"><div class="keys"><span class="key">void</span></div><div class="desc">no meaningful return value</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card mode-interfaces">
+        <div class="mode-head">Interfaces &amp; Type Aliases</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">interface X { a: string }</span></div><div class="desc">object shape (interface)</div></div>
+          <div class="row"><div class="keys"><span class="key">type X = { a: string }</span></div><div class="desc">object shape (type alias)</div></div>
+          <div class="row"><div class="keys"><span class="key">interface B extends A</span></div><div class="desc">interface extends another</div></div>
+          <div class="row"><div class="keys"><span class="key">a?: string</span></div><div class="desc">optional property</div></div>
+          <div class="row"><div class="keys"><span class="key">readonly a: string</span></div><div class="desc">read-only property</div></div>
+          <div class="row"><div class="keys"><span class="key">[key: string]: number</span></div><div class="desc">index signature</div></div>
+          <div class="row"><div class="keys"><span class="key">interface X { (a: string): void }</span></div><div class="desc">callable interface</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card mode-functions">
+        <div class="mode-head">Functions</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">function f(a: string): number</span></div><div class="desc">typed parameter and return</div></div>
+          <div class="row"><div class="keys"><span class="key">(a: string) =&gt; number</span></div><div class="desc">arrow function type</div></div>
+          <div class="row"><div class="keys"><span class="key">a?: string</span></div><div class="desc">optional parameter</div></div>
+          <div class="row"><div class="keys"><span class="key">a: string = "x"</span></div><div class="desc">default parameter</div></div>
+          <div class="row"><div class="keys"><span class="key">...rest: string[]</span></div><div class="desc">rest parameter</div></div>
+          <div class="row"><div class="keys"><span class="key">function f(): void</span></div><div class="desc">no return value</div></div>
+          <div class="row"><div class="keys"><span class="key">function f(): never</span></div><div class="desc">never returns (throws or loops)</div></div>
+          <div class="row"><div class="keys"><span class="key">function f(a: unknown): a is Foo</span></div><div class="desc">type predicate (type guard)</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card mode-generics">
+        <div class="mode-head">Generics</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">function f&lt;T&gt;(a: T): T</span></div><div class="desc">generic function</div></div>
+          <div class="row"><div class="keys"><span class="key">class Box&lt;T&gt; { value: T }</span></div><div class="desc">generic class</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;T extends object&gt;</span></div><div class="desc">constrain generic to a shape</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;T = string&gt;</span></div><div class="desc">default generic type</div></div>
+          <div class="row"><div class="keys"><span class="key">Map&lt;string, number&gt;</span></div><div class="desc">generic type instantiation</div></div>
+          <div class="row"><div class="keys"><span class="key">&lt;T, K extends keyof T&gt;</span></div><div class="desc">constrain generic to keys of another</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-union">
+        <div class="mode-head">Union, Intersection &amp; Narrowing</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">string | number</span></div><div class="desc">union: one of several types</div></div>
+          <div class="row"><div class="keys"><span class="key">A &amp; B</span></div><div class="desc">intersection: combines all members</div></div>
+          <div class="row"><div class="keys"><span class="key">typeof x === "string"</span></div><div class="desc">narrow via typeof guard</div></div>
+          <div class="row"><div class="keys"><span class="key">x instanceof Foo</span></div><div class="desc">narrow via instanceof guard</div></div>
+          <div class="row"><div class="keys"><span class="key">"a" in x</span></div><div class="desc">narrow via property presence</div></div>
+          <div class="row"><div class="keys"><span class="key">if (x) { ... }</span></div><div class="desc">narrow by truthiness</div></div>
+          <div class="row"><div class="keys"><span class="key">{ kind: "a" } | { kind: "b" }</span></div><div class="desc">discriminated union</div></div>
+          <div class="row"><div class="keys"><span class="key">x as Foo</span></div><div class="desc">type assertion (trust override)</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-utility">
+        <div class="mode-head">Utility Types</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">Partial&lt;T&gt;</span></div><div class="desc">all properties optional</div></div>
+          <div class="row"><div class="keys"><span class="key">Required&lt;T&gt;</span></div><div class="desc">all properties required</div></div>
+          <div class="row"><div class="keys"><span class="key">Readonly&lt;T&gt;</span></div><div class="desc">all properties read-only</div></div>
+          <div class="row"><div class="keys"><span class="key">Pick&lt;T, "a" | "b"&gt;</span></div><div class="desc">subset of properties</div></div>
+          <div class="row"><div class="keys"><span class="key">Omit&lt;T, "a"&gt;</span></div><div class="desc">all properties except listed</div></div>
+          <div class="row"><div class="keys"><span class="key">Record&lt;string, number&gt;</span></div><div class="desc">object type with key/value types</div></div>
+          <div class="row"><div class="keys"><span class="key">Exclude&lt;T, U&gt;</span></div><div class="desc">remove members assignable to U</div></div>
+          <div class="row"><div class="keys"><span class="key">Extract&lt;T, U&gt;</span></div><div class="desc">keep members assignable to U</div></div>
+          <div class="row"><div class="keys"><span class="key">ReturnType&lt;typeof f&gt;</span></div><div class="desc">return type of a function</div></div>
+          <div class="row"><div class="keys"><span class="key">Parameters&lt;typeof f&gt;</span></div><div class="desc">parameter tuple of a function</div></div>
+          <div class="row"><div class="keys"><span class="key">Awaited&lt;T&gt;</span></div><div class="desc">unwrap a Promise type</div></div>
+          <div class="row"><div class="keys"><span class="key">NonNullable&lt;T&gt;</span></div><div class="desc">remove null / undefined</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-classes">
+        <div class="mode-head">Classes</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">class Foo implements Bar</span></div><div class="desc">class implements an interface</div></div>
+          <div class="row"><div class="keys"><span class="key">class Foo extends Base</span></div><div class="desc">class inheritance</div></div>
+          <div class="row"><div class="keys"><span class="key">private a: string</span></div><div class="desc">accessible only within the class</div></div>
+          <div class="row"><div class="keys"><span class="key">protected a: string</span></div><div class="desc">accessible in class and subclasses</div></div>
+          <div class="row"><div class="keys"><span class="key">public a: string</span></div><div class="desc">accessible anywhere (default)</div></div>
+          <div class="row"><div class="keys"><span class="key">readonly a: string</span></div><div class="desc">settable once, in the constructor</div></div>
+          <div class="row"><div class="keys"><span class="key">abstract class Foo</span></div><div class="desc">cannot be instantiated directly</div></div>
+          <div class="row"><div class="keys"><span class="key">abstract method(): void</span></div><div class="desc">must be implemented by subclass</div></div>
+          <div class="row"><div class="keys"><span class="key">static a: string</span></div><div class="desc">belongs to the class, not instances</div></div>
+          <div class="row"><div class="keys"><span class="key">constructor(private a: string)</span></div><div class="desc">parameter property shorthand</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-modules">
+        <div class="mode-head">Modules &amp; Misc</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">import { a } from "./mod"</span></div><div class="desc">named import</div></div>
+          <div class="row"><div class="keys"><span class="key">import type { A } from "./mod"</span></div><div class="desc">type-only import (erased at runtime)</div></div>
+          <div class="row"><div class="keys"><span class="key">export default Foo</span></div><div class="desc">default export</div></div>
+          <div class="row"><div class="keys"><span class="key">declare const x: Foo</span></div><div class="desc">declare a value with no implementation</div></div>
+          <div class="row"><div class="keys"><span class="key">x as const</span></div><div class="desc">narrow literal to its exact read-only value</div></div>
+          <div class="row"><div class="keys"><span class="key">x satisfies Foo</span></div><div class="desc">check type without widening or casting</div></div>
+          <div class="row"><div class="keys"><span class="key">keyof T</span></div><div class="desc">union of a type's property keys</div></div>
+          <div class="row"><div class="keys"><span class="key">T[K]</span></div><div class="desc">indexed access type</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>unknown → narrow → known — never trust, always check</footer>
+  </div>
+</body>
+</html>
