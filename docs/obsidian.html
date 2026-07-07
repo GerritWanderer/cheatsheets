@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Obsidian Keybindings — Cheatsheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #1a1b26;
+    --bg-dark: #16161e;
+    --bg-soft: #1f2335;
+    --panel: #24283b;
+    --fg: #c0caf5;
+    --fg-dim: #565f89;
+
+    --rule: #2f3549;
+
+    --red: #f7768e;
+    --green: #9ece6a;
+    --yellow: #e0af68;
+    --blue: #7aa2f7;
+    --purple: #bb9af7;
+    --aqua: #7dcfff;
+    --orange: #ff9e64;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg-dark);
+    color: var(--fg);
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    padding: 22px 28px 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sheet {
+    width: 100%;
+    max-width: 2320px;
+  }
+
+  .statusbar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+  }
+  .statusbar .seg {
+    padding: 8px 16px;
+    white-space: nowrap;
+    border-right: 1px solid var(--rule);
+  }
+  .statusbar .seg.active {
+    background: var(--blue);
+    color: var(--bg-dark);
+    font-weight: 700;
+  }
+  .statusbar .seg.title {
+    flex: 1;
+    text-align: right;
+    color: var(--fg-dim);
+    letter-spacing: 0.02em;
+  }
+  .statusbar .seg .dim { color: var(--fg-dim); }
+
+  .titlerow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    color: var(--fg-dim);
+    font-size: 13px;
+    margin: 0;
+  }
+  .subtitle code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-soft);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--aqua);
+  }
+
+  .modes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 14px;
+  }
+
+  @media (max-width: 1200px) {
+    .modes { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .modes { grid-template-columns: 1fr; }
+  }
+
+  .mode-card {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .mode-card.wide {
+    grid-column: span 4;
+  }
+  @media (max-width: 1200px) {
+    .mode-card.wide { grid-column: span 2; }
+  }
+  @media (max-width: 640px) {
+    .mode-card.wide { grid-column: span 1; }
+  }
+
+  .mode-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .mode-head .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    opacity: 0.65;
+    font-size: 10.5px;
+  }
+
+  .rows {
+    padding: 4px 8px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 4px;
+    border-bottom: 1px solid var(--bg-soft);
+  }
+  .row:last-child { border-bottom: none; }
+
+  .keys {
+    display: flex;
+    gap: 3px;
+    flex: 0 0 auto;
+    min-width: 100px;
+  }
+  .key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--fg);
+    background: linear-gradient(180deg, #2a2f45, #24283b);
+    border: 1px solid var(--rule);
+    border-bottom: 2px solid #10111a;
+    border-radius: 4px;
+    padding: 2px 6px;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+  .desc {
+    font-size: 12px;
+    color: var(--fg-dim);
+  }
+  /* marker for personal (non-default) bindings — source rows ending in "(custom)" */
+  .desc .custom {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--orange);
+    border: 1px solid var(--orange);
+    border-radius: 3px;
+    padding: 0 4px;
+    margin-left: 6px;
+  }
+
+  .wide .rows {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0 10px;
+  }
+  @media (max-width: 1200px) {
+    .wide .rows { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .wide .rows { grid-template-columns: 1fr; }
+  }
+
+  footer {
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--fg-dim);
+    text-align: center;
+    letter-spacing: 0.03em;
+  }
+
+  /* ==========================================================================
+     SHEET-SPECIFIC STYLES — obsidian
+     ========================================================================== */
+
+  /* rows size to content — keeps the wide card from stretching to match row 1 */
+  .modes { grid-auto-rows: auto; }
+
+  /* accent mapping: one palette color per card head */
+  .mode-files .mode-head        { color: var(--bg-dark); background: var(--blue); }
+  .mode-formatting .mode-head   { color: var(--bg-dark); background: var(--red); }
+  .mode-search .mode-head       { color: var(--bg-dark); background: var(--yellow); }
+  .mode-lists .mode-head        { color: var(--bg-dark); background: var(--green); }
+  .mode-navigation .mode-head   { color: var(--bg-dark); background: var(--purple); }
+  .mode-mdformat .mode-head     { color: var(--bg-dark); background: var(--aqua); }
+  .mode-mdlinks .mode-head      { color: var(--bg-dark); background: var(--orange); }
+</style>
+</head>
+<body>
+  <div class="sheet">
+
+    <div class="statusbar">
+      <div class="seg active">EDITING</div>
+      <div class="seg dim">Obsidian</div>
+      <div class="seg dim">vault</div>
+      <div class="seg title">keybindings cheatsheet</div>
+    </div>
+
+    <div class="titlerow">
+      <h1>Obsidian Keybindings</h1>
+      <p class="subtitle">Basic macOS defaults for notes, navigation, search, formatting, lists and markdown syntax.</p>
+    </div>
+
+    <div class="modes">
+
+      <div class="mode-card mode-files">
+        <div class="mode-head">Files &amp; Notes</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">Cmd N</span></div><div class="desc">create new note</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd O</span></div><div class="desc">quick switcher</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd W</span></div><div class="desc">close current tab</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd S</span></div><div class="desc">save file</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd Shift D</span></div><div class="desc">open today's daily note <span class="custom">custom</span></div></div>
+        </div>
+      </div>
+
+      <div class="mode-card mode-formatting">
+        <div class="mode-head">Formatting</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">Cmd B</span></div><div class="desc">bold</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd I</span></div><div class="desc">italic</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd K</span></div><div class="desc">insert/edit link</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd Shift X</span></div><div class="desc">toggle strikethrough</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd Shift H</span></div><div class="desc">toggle highlight</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd E</span></div><div class="desc">toggle edit/reading view</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card mode-search">
+        <div class="mode-head">Search</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">Cmd F</span></div><div class="desc">search current file</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd Shift F</span></div><div class="desc">search all files</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd H</span></div><div class="desc">find &amp; replace</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card mode-lists">
+        <div class="mode-head">Lists <span class="count">indent &amp; task syntax</span></div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">Tab</span></div><div class="desc">indent list item</div></div>
+          <div class="row"><div class="keys"><span class="key">Shift Tab</span></div><div class="desc">outdent list item</div></div>
+          <div class="row"><div class="keys"><span class="key">-&nbsp;</span></div><div class="desc">bullet list</div></div>
+          <div class="row"><div class="keys"><span class="key">1.&nbsp;</span></div><div class="desc">numbered list</div></div>
+          <div class="row"><div class="keys"><span class="key">- [ ]</span></div><div class="desc">unchecked task</div></div>
+          <div class="row"><div class="keys"><span class="key">- [x]</span></div><div class="desc">checked task</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-navigation">
+        <div class="mode-head">Navigation &amp; Panes</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">Cmd P</span></div><div class="desc">command palette</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd ,</span></div><div class="desc">open settings</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd Alt Left</span></div><div class="desc">navigate back</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd Alt Right</span></div><div class="desc">navigate forward</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd G</span></div><div class="desc">open graph view</div></div>
+          <div class="row"><div class="keys"><span class="key">Ctrl Tab</span></div><div class="desc">next tab (uses ctrl, not cmd)</div></div>
+          <div class="row"><div class="keys"><span class="key">Ctrl Shift Tab</span></div><div class="desc">previous tab</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd Click</span></div><div class="desc">open link in new pane</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd Alt Enter</span></div><div class="desc">open link in new pane (keyboard)</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd Alt V</span></div><div class="desc">toggle default new-pane split direction</div></div>
+          <div class="row"><div class="keys"><span class="key">Cmd Shift E</span></div><div class="desc">reveal active file in navigation <span class="custom">custom</span></div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-mdformat">
+        <div class="mode-head">Markdown — Formatting</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key"># </span></div><div class="desc">heading 1</div></div>
+          <div class="row"><div class="keys"><span class="key">## </span></div><div class="desc">heading 2</div></div>
+          <div class="row"><div class="keys"><span class="key">### </span></div><div class="desc">heading 3</div></div>
+          <div class="row"><div class="keys"><span class="key">**bold**</span></div><div class="desc">bold</div></div>
+          <div class="row"><div class="keys"><span class="key">*italic*</span></div><div class="desc">italic</div></div>
+          <div class="row"><div class="keys"><span class="key">~~strike~~</span></div><div class="desc">strikethrough</div></div>
+          <div class="row"><div class="keys"><span class="key">==mark==</span></div><div class="desc">highlight</div></div>
+          <div class="row"><div class="keys"><span class="key">`code`</span></div><div class="desc">inline code</div></div>
+          <div class="row"><div class="keys"><span class="key">```</span></div><div class="desc">code block</div></div>
+          <div class="row"><div class="keys"><span class="key">&gt; text</span></div><div class="desc">blockquote</div></div>
+          <div class="row"><div class="keys"><span class="key">---</span></div><div class="desc">horizontal rule</div></div>
+        </div>
+      </div>
+
+      <div class="mode-card wide mode-mdlinks">
+        <div class="mode-head">Markdown — Links &amp; Extras</div>
+        <div class="rows">
+          <div class="row"><div class="keys"><span class="key">[text](url)</span></div><div class="desc">link</div></div>
+          <div class="row"><div class="keys"><span class="key">![alt](path)</span></div><div class="desc">image embed</div></div>
+          <div class="row"><div class="keys"><span class="key">[[Note]]</span></div><div class="desc">internal link</div></div>
+          <div class="row"><div class="keys"><span class="key">[[Note|alias]]</span></div><div class="desc">link with display text</div></div>
+          <div class="row"><div class="keys"><span class="key">![[Note]]</span></div><div class="desc">embed note</div></div>
+          <div class="row"><div class="keys"><span class="key">![[Note#Heading]]</span></div><div class="desc">embed section</div></div>
+          <div class="row"><div class="keys"><span class="key">#tag</span></div><div class="desc">tag</div></div>
+          <div class="row"><div class="keys"><span class="key">%%comment%%</span></div><div class="desc">hidden comment</div></div>
+          <div class="row"><div class="keys"><span class="key">&gt; [!note]</span></div><div class="desc">callout</div></div>
+          <div class="row"><div class="keys"><span class="key">^block-id</span></div><div class="desc">mark block for reference</div></div>
+          <div class="row"><div class="keys"><span class="key">[[Note#^block-id]]</span></div><div class="desc">link to a block</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>EDITING ⇄ READING — Cmd E toggles view</footer>
+  </div>
+</body>
+</html>
