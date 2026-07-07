@@ -1,0 +1,19 @@
+# Mapped to feel like the tmux config in cheatsheets/src/terminal/terminal.md.
+# Everything not listed here inherits herdr's own defaults — see herdr.dev/docs/configuration.
+[keys]
+prefix = "ctrl+space"
+detach = "prefix+q"
+toggle_sidebar = "prefix+b"
+
+new_workspace = "prefix+shift+c"
+rename_workspace = "prefix+shift+r"
+close_workspace = "prefix+shift+k"
+next_workspace = ["prefix+shift+n", "alt+down"]
+previous_workspace = ["prefix+shift+p", "alt+up"]
+
+switch_tab = ["prefix+1..9", "alt+1..9"]
+
+focus_pane_left = ["prefix+h", "ctrl+alt+left"]
+focus_pane_down = ["prefix+j", "ctrl+alt+down"]
+focus_pane_up = ["prefix+k", "ctrl+alt+up"]
+focus_pane_right = ["prefix+l", "ctrl+alt+right"]
