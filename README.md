@@ -10,6 +10,7 @@ Live at **https://gerritwanderer.github.io/cheatsheets/**
 | [Ghostty](docs/ghostty.html) | `dotfiles/.config/ghostty/keybindings` (macOS) + `~/.config/ghostty/config` (Omarchy) |
 | [Obsidian](docs/obsidian.html) | Obsidian defaults + vault `hotkeys.json` |
 | [Basic Memory](docs/basic-memory.html) | Claude Code plugin, `memory-*` skills, `bm --help` |
+| [macOS Navigation](docs/macos.html) | macOS and Zen Browser defaults + my workspace bindings |
 
 ## How it works
 

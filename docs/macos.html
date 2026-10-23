@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>macOS Navigation Cheatsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="assets/sheet.css">
+</head>
+<body>
+<script>
+// Source: custom bindings as described by Gerrit (workspaces ⌘+1…4, Zen workspaces Ctrl+1/2)
+// + macOS and Zen Browser (Firefox-based) defaults. No macOS window manager config in dotfiles.
+window.SHEET = {
+  eyebrow: "Desktop · macOS + Zen Browser",
+  title: "macOS Navigation",
+  sub: "Jump between workspaces, apps and windows, plus Zen Browser workspaces and tabs.",
+  sections: [
+    { title: "Workspaces", tag: "desktops", items: [
+      ["go to workspace 1–4 (custom)", "⌘+1…4"],
+      ["previous / next desktop", "Ctrl+← Ctrl+→", "or"],
+      ["Mission Control", "Ctrl+↑"],
+      ["all windows of current app", "Ctrl+↓"],
+    ]},
+    { title: "Apps & windows", tag: "switch", items: [
+      ["switch app", "⌘+Tab"],
+      ["cycle windows of current app", "⌘+`"],
+      ["hide app", "⌘+h"],
+      ["minimize window", "⌘+m"],
+      ["close window", "⌘+w"],
+      ["quit app", "⌘+q"],
+      ["toggle full screen", "⌘+Ctrl+f"],
+      ["force quit", "⌘+Option+Esc"],
+    ]},
+    { title: "Zen Browser", tag: "workspaces & tabs", items: [
+      ["go to Zen workspace 1 / 2 (custom)", "Ctrl+1 Ctrl+2", "or"],
+      ["new tab", "⌘+t"],
+      ["close tab", "⌘+w"],
+      ["reopen closed tab", "⌘+Shift+T"],
+      ["next / previous tab", "Ctrl+Tab Ctrl+Shift+Tab", "or"],
+      ["focus address bar", "⌘+l"],
+      ["back / forward", "⌘+[ ⌘+]", "or"],
+      ["find in page", "⌘+f"],
+      ["reload", "⌘+r"],
+    ]},
+    { title: "System", tag: "global", items: [
+      ["Spotlight search", "⌘+Space"],
+      ["app settings", "⌘+,"],
+      ["lock screen", "⌘+Ctrl+q"],
+      ["screenshot of an area", "⌘+Shift+4"],
+      ["screenshot and recording tools", "⌘+Shift+5"],
+    ]},
+    { title: "Finder", tag: "files", items: [
+      ["go to folder by path", "⌘+Shift+G"],
+      ["home folder", "⌘+Shift+H"],
+      ["parent folder", "⌘+↑"],
+      ["open selected item", "⌘+↓"],
+      ["Quick Look", "Space"],
+      ["show / hide hidden files", "⌘+Shift+."],
+      ["move to trash", "⌘+Delete"],
+    ]},
+  ],
+};
+</script>
+<script src="assets/sheet.js"></script>
+</body>
+</html>
