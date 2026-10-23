@@ -45,6 +45,7 @@
     return highlight(text, term) + (custom ? '<span class="badge">custom</span>' : "");
   }
 
+  const hasCustom = S.sections.some(sec => sec.items.some(([label]) => /\(custom\)$/.test(label)));
   const wrap = document.createElement("div");
   wrap.className = "wrap";
   wrap.innerHTML = `
@@ -66,7 +67,7 @@
       <span><kbd>Ctrl</kbd><span class="join">+</span><kbd>d</kbd> press together</span>
       <span><kbd>g</kbd><span class="then">then</span><kbd>g</kbd> press in sequence</span>
       ${S.prefix ? `<span>${cap("Prefix")} = ${renderKeys(S.prefix)}</span>` : ""}
-      <span><span class="badge">custom</span> personal binding</span>
+      ${hasCustom ? '<span><span class="badge">custom</span> personal binding</span>' : ""}
     </footer>`;
   document.body.prepend(wrap);
   if (!document.title) document.title = S.title + " Cheatsheet";
