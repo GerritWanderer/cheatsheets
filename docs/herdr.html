@@ -1,335 +1,79 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Herdr — Cheatsheet</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
-
-  :root {
-    --bg: #1a1b26;
-    --bg-dark: #16161e;
-    --bg-soft: #1f2335;
-    --panel: #24283b;
-    --fg: #c0caf5;
-    --fg-dim: #565f89;
-
-    --rule: #2f3549;
-
-    --red: #f7768e;
-    --green: #9ece6a;
-    --yellow: #e0af68;
-    --blue: #7aa2f7;
-    --purple: #bb9af7;
-    --aqua: #7dcfff;
-    --orange: #ff9e64;
-  }
-
-  * { box-sizing: border-box; }
-
-  html, body {
-    height: 100%;
-  }
-
-  body {
-    margin: 0;
-    background: var(--bg-dark);
-    color: var(--fg);
-    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    padding: 22px 28px 20px;
-    display: flex;
-    justify-content: center;
-  }
-
-  .sheet {
-    width: 100%;
-    max-width: 2320px;
-  }
-
-  .statusbar {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    background: var(--bg-soft);
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 14px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12.5px;
-  }
-  .statusbar .seg {
-    padding: 8px 16px;
-    white-space: nowrap;
-    border-right: 1px solid var(--rule);
-  }
-  .statusbar .seg.active {
-    background: var(--blue);
-    color: var(--bg-dark);
-    font-weight: 700;
-  }
-  .statusbar .seg.title {
-    flex: 1;
-    text-align: right;
-    color: var(--fg-dim);
-    letter-spacing: 0.02em;
-  }
-  .statusbar .seg .dim { color: var(--fg-dim); }
-
-  .titlerow {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-
-  h1 {
-    font-family: 'Inter', sans-serif;
-    font-size: 24px;
-    font-weight: 800;
-    margin: 0;
-    letter-spacing: -0.01em;
-  }
-  .subtitle {
-    color: var(--fg-dim);
-    font-size: 13px;
-    margin: 0;
-  }
-  .subtitle code {
-    font-family: 'JetBrains Mono', monospace;
-    background: var(--bg-soft);
-    padding: 1px 6px;
-    border-radius: 4px;
-    color: var(--aqua);
-  }
-
-  .modes {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: auto;
-    gap: 14px;
-  }
-
-  @media (max-width: 1200px) {
-    .modes { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 640px) {
-    .modes { grid-template-columns: 1fr; }
-  }
-
-  .mode-card {
-    background: var(--panel);
-    border: 1px solid var(--rule);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .mode-card.wide {
-    grid-column: span 4;
-  }
-  @media (max-width: 1200px) {
-    .mode-card.wide { grid-column: span 2; }
-  }
-  @media (max-width: 640px) {
-    .mode-card.wide { grid-column: span 1; }
-  }
-
-  .mode-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--rule);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
-  .mode-head .count {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 400;
-    text-transform: none;
-    letter-spacing: 0;
-    opacity: 0.65;
-    font-size: 10.5px;
-  }
-
-  .rows {
-    padding: 4px 8px;
-  }
-  .row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 4px;
-    border-bottom: 1px solid var(--bg-soft);
-  }
-  .row:last-child { border-bottom: none; }
-
-  .keys {
-    display: flex;
-    gap: 3px;
-    flex: 0 0 auto;
-    min-width: 100px;
-  }
-  .key {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11.5px;
-    font-weight: 700;
-    color: var(--fg);
-    background: linear-gradient(180deg, #2a2f45, #24283b);
-    border: 1px solid var(--rule);
-    border-bottom: 2px solid #10111a;
-    border-radius: 4px;
-    padding: 2px 6px;
-    line-height: 1.35;
-    white-space: nowrap;
-  }
-  .desc {
-    font-size: 12px;
-    color: var(--fg-dim);
-  }
-  /* marker for personal (non-default) bindings — source rows ending in "(custom)" */
-  .desc .custom {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--orange);
-    border: 1px solid var(--orange);
-    border-radius: 3px;
-    padding: 0 4px;
-    margin-left: 6px;
-  }
-
-  .wide .rows {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0 10px;
-  }
-  @media (max-width: 1200px) {
-    .wide .rows { grid-template-columns: repeat(3, 1fr); }
-  }
-  @media (max-width: 640px) {
-    .wide .rows { grid-template-columns: 1fr; }
-  }
-
-  footer {
-    margin-top: 14px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10.5px;
-    color: var(--fg-dim);
-    text-align: center;
-    letter-spacing: 0.03em;
-  }
-
-  /* ==========================================================================
-     SHEET-SPECIFIC STYLES — herdr
-     ========================================================================== */
-
-  /* accent mapping: one palette color per card head — mirrors terminal.html's
-     tmux cards (panes/windows/session/copy) so the two sheets read as a pair */
-  .mode-panes .mode-head      { color: var(--bg-dark); background: var(--purple); }
-  .mode-tabs .mode-head       { color: var(--bg-dark); background: var(--blue); }
-  .mode-workspaces .mode-head { color: var(--bg-dark); background: var(--green); }
-  .mode-copy .mode-head       { color: var(--bg-dark); background: var(--yellow); }
-  .mode-bonus .mode-head      { color: var(--bg-dark); background: var(--aqua); }
-  .mode-remote .mode-head     { color: var(--bg-dark); background: var(--orange); }
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Herdr Cheatsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="assets/sheet.css">
 </head>
 <body>
-  <div class="sheet">
-
-    <div class="statusbar">
-      <div class="seg active">C-Space</div>
-      <div class="seg dim">herdr</div>
-      <div class="seg dim">~/.config/herdr/config.toml</div>
-      <div class="seg title">keybindings cheatsheet</div>
-    </div>
-
-    <div class="titlerow">
-      <h1>Herdr</h1>
-      <p class="subtitle">prefix remapped to <code>Ctrl + Space</code> to match tmux · workspace &#8776; tmux session, tab &#8776; tmux window</p>
-    </div>
-
-    <div class="modes">
-
-      <div class="mode-card mode-panes">
-        <div class="mode-head">Panes</div>
-        <div class="rows">
-          <div class="row"><div class="keys"><span class="key">Prefix v</span></div><div class="desc">split pane right (vertical)</div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix -</span></div><div class="desc">split pane down (horizontal) <span class="custom">custom</span></div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix x</span></div><div class="desc">close pane</div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix z</span></div><div class="desc">toggle pane zoom (fullscreen)</div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix h</span><span class="key">j</span><span class="key">k</span><span class="key">l</span></div><div class="desc">move focus between panes</div></div>
-          <div class="row"><div class="keys"><span class="key">Ctrl Alt Arrow</span></div><div class="desc">move focus between panes <span class="custom">custom</span></div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix r</span></div><div class="desc">enter resize mode <span class="custom">custom</span></div></div>
-        </div>
-      </div>
-
-      <div class="mode-card mode-tabs">
-        <div class="mode-head">Tabs</div>
-        <div class="rows">
-          <div class="row"><div class="keys"><span class="key">Prefix c</span></div><div class="desc">new tab</div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix Shift X</span></div><div class="desc">close tab <span class="custom">custom</span></div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix Shift T</span></div><div class="desc">rename tab <span class="custom">custom</span></div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix 1</span>…<span class="key">9</span></div><div class="desc">go to specific tab</div></div>
-          <div class="row"><div class="keys"><span class="key">Alt 1</span>…<span class="key">9</span></div><div class="desc">go to specific tab <span class="custom">custom</span></div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix n</span><span class="key">Prefix p</span></div><div class="desc">next / previous tab</div></div>
-          <div class="row"><div class="keys"><span class="key">Alt Left/Right</span></div><div class="desc">next / previous tab <span class="custom">custom</span></div></div>
-        </div>
-      </div>
-
-      <div class="mode-card mode-workspaces">
-        <div class="mode-head">Workspaces &amp; Session</div>
-        <div class="rows">
-          <div class="row"><div class="keys"><span class="key">Prefix Shift C</span></div><div class="desc">new workspace <span class="custom">custom</span></div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix Shift K</span></div><div class="desc">close workspace <span class="custom">custom</span></div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix Shift R</span></div><div class="desc">rename workspace <span class="custom">custom</span></div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix Shift N</span><span class="key">Prefix Shift P</span></div><div class="desc">next / previous workspace <span class="custom">custom</span></div></div>
-          <div class="row"><div class="keys"><span class="key">Alt Down/Up</span></div><div class="desc">next / previous workspace <span class="custom">custom</span></div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix w</span></div><div class="desc">workspace picker (list)</div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix q</span></div><div class="desc">detach, leave running <span class="custom">custom</span></div></div>
-        </div>
-      </div>
-
-      <div class="mode-card mode-copy">
-        <div class="mode-head">Copy Mode <span class="count">vi-style</span></div>
-        <div class="rows">
-          <div class="row"><div class="keys"><span class="key">Prefix [</span></div><div class="desc">enter copy mode</div></div>
-          <div class="row"><div class="keys"><span class="key">v</span></div><div class="desc">begin selection (in copy mode)</div></div>
-          <div class="row"><div class="keys"><span class="key">y</span></div><div class="desc">copy selection (in copy mode)</div></div>
-          <div class="row"><div class="keys"><span class="key">q</span></div><div class="desc">leave without copying</div></div>
-        </div>
-      </div>
-
-      <div class="mode-card wide mode-bonus">
-        <div class="mode-head">Bonus <span class="count">herdr-only, no tmux equivalent</span></div>
-        <div class="rows">
-          <div class="row"><div class="keys"><span class="key">Prefix Shift H/J/K/L</span></div><div class="desc">swap pane with neighbor</div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix Tab</span></div><div class="desc">cycle to next pane</div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix Shift Tab</span></div><div class="desc">cycle to previous pane</div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix g</span></div><div class="desc">goto picker (jump to anything)</div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix b</span></div><div class="desc">toggle sidebar</div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix Shift G</span></div><div class="desc">new git worktree</div></div>
-          <div class="row"><div class="keys"><span class="key">Prefix ?</span></div><div class="desc">show active keybindings</div></div>
-        </div>
-      </div>
-
-      <div class="mode-card wide mode-remote">
-        <div class="mode-head">Remote</div>
-        <div class="rows">
-          <div class="row"><div class="keys"><span class="key">herdr --remote &lt;ssh-alias&gt;</span></div><div class="desc">thin-client attach, uses local keybindings above</div></div>
-          <div class="row"><div class="keys"><span class="key">herdr</span></div><div class="desc">tmux-style: run herdr on the remote box directly (after ssh)</div></div>
-          <div class="row"><div class="keys"><span class="key">herdr --remote &lt;alias&gt; --session &lt;name&gt;</span></div><div class="desc">attach a named remote session</div></div>
-          <div class="row"><div class="keys"><span class="key">herdr session list</span></div><div class="desc">list local named sessions</div></div>
-        </div>
-      </div>
-
-    </div>
-
-    <footer>same C-Space reflex as tmux — panes and hjkl nav are the only real departures</footer>
-  </div>
+<script>
+// Source: ~/.config/herdr/config.toml (mirrors the Omarchy tmux config) + herdr 0.9.5 defaults.
+window.SHEET = {
+  eyebrow: "Terminal workspaces · herdr 0.9.5",
+  title: "Herdr",
+  sub: "Keys from the Omarchy-style config: workspace ≈ tmux session, tab ≈ tmux window, pane ≈ tmux pane.",
+  prefix: "Ctrl+Space",
+  sections: [
+    { title: "Panes", tag: "split", items: [
+      ["split right", "Prefix |"],
+      ["split down", "Prefix -"],
+      ["close pane", "Prefix x"],
+      ["toggle zoom", "Prefix z"],
+      ["focus pane, also across nvim splits (custom)", "Ctrl+h/j/k/l"],
+      ["resize pane (custom)", "Ctrl+Shift+H/J/K/L"],
+      ["cycle to next pane", "Prefix Tab"],
+      ["cycle to previous pane", "Prefix Shift+Tab"],
+      ["rename pane (custom)", "Prefix Shift+O"],
+      ["edit scrollback in editor", "Prefix e"],
+    ]},
+    { title: "Tabs", tag: "tmux window", items: [
+      ["new tab", "Prefix c"],
+      ["rename tab (custom)", "Prefix r"],
+      ["close tab (custom)", "Prefix k"],
+      ["go to tab 1–9", "Prefix 1…9"],
+      ["go to tab 1–9 (custom)", "Alt+1…9"],
+      ["next tab", "Prefix n"],
+      ["previous tab", "Prefix p"],
+      ["move tab left / right (custom)", "Alt+Shift+H/L"],
+    ]},
+    { title: "Workspaces", tag: "tmux session", items: [
+      ["new workspace (custom)", "Prefix Shift+C"],
+      ["rename workspace (custom)", "Prefix Shift+R"],
+      ["close workspace (custom)", "Prefix Shift+K"],
+      ["previous / next workspace (custom)", "Alt+Up Alt+Down", "or"],
+      ["workspace picker", "Prefix w"],
+      ["new git worktree", "Prefix Shift+G"],
+    ]},
+    { title: "Navigate & session", tag: "app", items: [
+      ["goto picker, jump to anything", "Prefix g"],
+      ["toggle sidebar", "Prefix b"],
+      ["open notification target", "Prefix o"],
+      ["detach, leave running (custom)", "Prefix d"],
+      ["reload config (custom)", "Prefix q"],
+      ["settings", "Prefix s"],
+      ["show active keybindings", "Prefix ?"],
+    ]},
+    { title: "Copy mode", tag: "vi-style", items: [
+      ["enter copy mode", "Prefix ["],
+      ["begin selection", "v"],
+      ["copy selection", "y"],
+      ["leave without copying", "q"],
+    ]},
+    { title: "Command line", tag: "shell", items: [
+      ["launch or attach to the persistent session", "herdr", "cmd"],
+      ["attach to a named session", "herdr --session <name>", "cmd"],
+      ["thin client over ssh, local keys", "herdr --remote <ssh-target>", "cmd"],
+      ["reload config.toml in the running server", "herdr server reload-config", "cmd"],
+      ["validate config.toml", "herdr config check", "cmd"],
+      ["client and server status", "herdr status", "cmd"],
+    ]},
+  ],
+};
+</script>
+<script src="assets/sheet.js"></script>
 </body>
 </html>

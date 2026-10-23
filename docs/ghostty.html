@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ghostty Cheatsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="assets/sheet.css">
+</head>
+<body>
+<script>
+// Source: dotfiles/.config/ghostty/keybindings (macOS, starts with keybind = clear)
+// and ~/.config/ghostty/config (Omarchy, Linux).
+window.SHEET = {
+  eyebrow: "Terminal · custom keymap",
+  title: "Ghostty",
+  sub: "The macOS keymap clears all defaults and defines everything below. The last card lists the extra binds in the Omarchy config on Linux.",
+  sections: [
+    { title: "Windows & tabs", tag: "macOS", items: [
+      ["new window", "⌘+n"],
+      ["new tab", "⌘+t"],
+      ["next tab", "Ctrl+Tab"],
+      ["previous tab", "Ctrl+Shift+Tab"],
+      ["close split or tab", "⌘+w"],
+      ["close window", "⌘+Shift+W"],
+      ["quit ghostty", "⌘+q"],
+      ["reload config", "⌘+Shift+,"],
+    ]},
+    { title: "Splits", tag: "macOS", items: [
+      ["new split right", "Ctrl+Enter"],
+      ["new split down", "Ctrl+Shift+Enter"],
+      ["toggle split zoom", "⌘+Enter"],
+      ["focus split", "Ctrl+h/j/k/l"],
+      ["next / previous split", "⌘+] ⌘+[", "or"],
+      ["resize split by 50", "Ctrl+Shift+H/J/K/L"],
+    ]},
+    { title: "Clipboard & selection", tag: "macOS", items: [
+      ["copy", "⌘+c"],
+      ["paste", "⌘+v"],
+      ["paste from selection", "⌘+Shift+V"],
+      ["select all", "⌘+a"],
+      ["extend selection", "Shift+←/→/↑/↓"],
+      ["copy (alternative)", "Ctrl+Insert"],
+      ["paste (alternative)", "Shift+Insert"],
+    ]},
+    { title: "Line editing", tag: "shell", items: [
+      ["word left / right", "Alt+← Alt+→", "or"],
+      ["line start / end", "⌘+← ⌘+→", "or"],
+      ["delete to line start", "⌘+Backspace"],
+      ["jump to next prompt", "⌘+↓"],
+      ["clear screen", "⌘+k"],
+      ["insert newline (Shift+Enter sends \\r)", "Shift+Enter"],
+    ]},
+    { title: "Font & scrollback", tag: "view", items: [
+      ["bigger font", "⌘+Plus ⌘+=", "or"],
+      ["smaller font", "⌘+-"],
+      ["open scrollback in editor", "⌘+f"],
+    ]},
+    { title: "Omarchy extras", tag: "linux", items: [
+      ["resize split by 100 (custom)", "Super+Ctrl+Shift+Alt+Arrow"],
+      ["send Shift+Enter as CSI-u for TUIs (custom)", "Shift+Enter"],
+      ["send Alt+Shift+Enter as CSI-u for tmux (custom)", "Alt+Shift+Enter"],
+      ["copy / paste (custom)", "Ctrl+Insert Shift+Insert", "or"],
+    ]},
+  ],
+};
+</script>
+<script src="assets/sheet.js"></script>
+</body>
+</html>

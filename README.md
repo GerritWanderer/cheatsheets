@@ -1,9 +1,22 @@
 # Cheatsheets
 
-Single-page HTML cheatsheets for tools I use every day. Each sheet has a folder of source material in [`src/`](src/) — a canonical markdown file plus any reference material it was distilled from — and is rendered as a self-contained, styled HTML page in [`docs/`](docs/). The markdown is the source of truth; the HTML is regenerated from it.
+Shortcut and command cheatsheets for the tools I use every day, built from my own config files.
 
-## Sheets
+Live at **https://gerritwanderer.github.io/cheatsheets/**
 
-- [Neovim](docs/neovim.html) — [source](src/neovim/neovim.md)
-- [Tmux](docs/tmux.html) — [source](src/tmux/tmux.md)
-- [TypeScript](docs/typescript.html) — [source](src/typescript/typescript.md)
+| Sheet | Built from |
+| --- | --- |
+| [Herdr](docs/herdr.html) | `~/.config/herdr/config.toml` + herdr defaults |
+| [Ghostty](docs/ghostty.html) | `dotfiles/.config/ghostty/keybindings` (macOS) + `~/.config/ghostty/config` (Omarchy) |
+| [Obsidian](docs/obsidian.html) | Obsidian defaults + vault `hotkeys.json` |
+| [Basic Memory](docs/basic-memory.html) | Claude Code plugin, `memory-*` skills, `bm --help` |
+
+## How it works
+
+No build step. GitHub Pages serves `docs/` from `main`.
+
+- `docs/assets/sheet.css` holds the shared design (theme tokens, light and dark).
+- `docs/assets/sheet.js` renders a whole page from a `window.SHEET` object.
+- Each `docs/<tool>.html` only defines `window.SHEET`. See the comment at the top of `sheet.js` for the format.
+
+To add a sheet, copy an existing one, replace the `SHEET` data, and add a card to `docs/index.html`.

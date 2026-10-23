@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Basic Memory Cheatsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="assets/sheet.css">
+</head>
+<body>
+<script>
+// Source: Claude Code plugin basic-memory 0.23.2 (~/.claude/plugins/cache/basicmachines-co/basic-memory),
+// skills in ~/.claude/skills/memory-*, and `bm --help` (Basic Memory 0.24.1).
+window.SHEET = {
+  eyebrow: "Knowledge graph · plugin 0.23.2 · CLI 0.24.1",
+  title: "Basic Memory",
+  sub: "Slash commands from the Claude Code plugin, the memory skills, and the bm command line. Skills also trigger on their own when a request matches.",
+  sections: [
+    { title: "Plugin commands", tag: "claude code", items: [
+      ["quick note: \"remember that…\"", "/basic-memory:bm-remember <text>", "cmd"],
+      ["record a decision with rationale and alternatives", "/basic-memory:bm-decide <decision>", "cmd"],
+      ["checkpoint: story, files, blockers, next action", "/basic-memory:bm-checkpoint <topic>", "cmd"],
+      ["read tasks, decisions, checkpoints before work", "/basic-memory:bm-orient", "cmd"],
+      ["show plugin state for this project", "/basic-memory:bm-status", "cmd"],
+      ["guided setup interview for this project", "/basic-memory:bm-setup", "cmd"],
+      ["promote a note to a team project", "/basic-memory:bm-share <note>", "cmd"],
+    ]},
+    { title: "Plugin hooks", tag: "automatic", items: [
+      ["session briefing at startup", "SessionStart", "cmd"],
+      ["checkpoint before context compaction", "PreCompact", "cmd"],
+    ]},
+    { title: "Capture & resume", tag: "skills", items: [
+      ["save a thread's state into one note, rewrite on re-capture", "/memory-capture", "cmd"],
+      ["rebuild context: \"where were we?\"", "/memory-continue", "cmd"],
+      ["turn transcripts or pasted docs into notes", "/memory-ingest", "cmd"],
+      ["research a topic on the web into a note", "/memory-research <topic>", "cmd"],
+      ["structured tasks that survive compaction", "/memory-tasks", "cmd"],
+    ]},
+    { title: "Organize the graph", tag: "skills", items: [
+      ["link orphans, merge duplicates, build hub notes", "/memory-curate", "cmd"],
+      ["split bloated notes, resolve contradictions", "/memory-defrag", "cmd"],
+      ["fold recent activity into lasting notes", "/memory-reflect", "cmd"],
+      ["archive done work, move by status", "/memory-lifecycle", "cmd"],
+      ["infer, validate and fix note schemas", "/memory-schema", "cmd"],
+      ["search by frontmatter fields", "/memory-metadata-search", "cmd"],
+    ]},
+    { title: "Writing notes", tag: "skills", items: [
+      ["frontmatter, observations, wiki-link relations", "/memory-notes", "cmd"],
+      ["charts, tables and boards with ::bm-* components", "/memory-comark", "cmd"],
+      ["cloud agents: notes whose text is instructions", "/memory-agents", "cmd"],
+      ["design a knowledge system from scratch", "/memory-onboarding", "cmd"],
+    ]},
+    { title: "Note syntax", tag: "markdown", items: [
+      ["observation with category and tags", "- [decision] Use SQLite #storage", "cmd"],
+      ["relation to another note", "- implements [[Auth Spec]]", "cmd"],
+      ["link to a note in text", "[[Note Title]]", "cmd"],
+      ["address a note or folder", "memory://folder/note-title", "cmd"],
+    ]},
+    { title: "bm command line", tag: "shell", items: [
+      ["search note content (--semantic ranks by meaning)", "bm grep <term>", "cmd"],
+      ["print a note", "bm cat <note>", "cmd"],
+      ["recently changed notes", "bm tail", "cmd"],
+      ["query notes by name or frontmatter", "bm find", "cmd"],
+      ["notes without relations", "bm orphans", "cmd"],
+      ["index status and readiness", "bm status", "cmd"],
+      ["check files against the index", "bm doctor", "cmd"],
+      ["rebuild search indexes", "bm reindex", "cmd"],
+      ["manage projects", "bm project", "cmd"],
+    ]},
+  ],
+};
+</script>
+<script src="assets/sheet.js"></script>
+</body>
+</html>
